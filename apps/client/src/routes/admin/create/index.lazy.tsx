@@ -1,6 +1,5 @@
 import React from 'react'
-import { createLazyFileRoute, Link } from '@tanstack/react-router'
-import { Button, buttonVariants } from '@/components/ui/button'
+import { createLazyFileRoute } from '@tanstack/react-router'
 import { MainInfo } from '@/components/modules/create-quiz-modules/main-info';
 
 export const Route = createLazyFileRoute('/admin/create/')({
