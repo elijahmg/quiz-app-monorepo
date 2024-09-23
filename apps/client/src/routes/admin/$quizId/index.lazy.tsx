@@ -1,7 +1,8 @@
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
 import React from 'react'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { AdminInGameHeader } from '@/components/modules/admin-in-game-header';
+import { CenterWrapper } from '@/components/wrappers/center-wrapper';
 
 export const Route = createLazyFileRoute('/admin/$quizId/')({
   component: IndexQuizAdminScreen,
@@ -24,19 +25,13 @@ function IndexQuizAdminScreen() {
   }
 
   return (
-    <div className="flex flex-col gap-24 justify-center items-center h-[100vh] max-w-screen-lg mx-auto">
-      <div className="flex w-full justify-between">
-        <div>
-          <h2 className="text-4xl font-bold">Name</h2>
-          <p className="text-gray-600">Pin: 1234</p>
-        </div>
-        <Badge className="self-baseline">Teams online: 7</Badge>
-      </div>
+    <CenterWrapper>
+      <AdminInGameHeader/>
       <div className="flex flex-col space-y-4">
         <Button onClick={handleStartQuiz}>Start Quiz</Button>
         <Button variant="outline">Edit Quiz</Button>
         <Button variant="destructive">Delete Quiz</Button>
       </div>
-    </div>
+    </CenterWrapper>
   )
 }
