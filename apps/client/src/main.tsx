@@ -4,6 +4,8 @@ import './index.css';
 
 // Import the generated route tree
 import { createRouter, RouterProvider } from '@tanstack/react-router';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Toaster } from '@/components/ui/toaster';
 import { routeTree } from './routeTree.gen'
 
@@ -17,14 +19,19 @@ declare module '@tanstack/react-router' {
   }
 }
 
+const queryClient = new QueryClient()
+
 const el = document.getElementById('root');
 
 if (el) {
   const root = createRoot(el);
   root.render(
     <React.StrictMode>
-      <RouterProvider router={router}/>
-      <Toaster />
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router}/>
+        <Toaster/>
+        <ReactQueryDevtools initialIsOpen={false}/>
+      </QueryClientProvider>
     </React.StrictMode>
   );
 } else {

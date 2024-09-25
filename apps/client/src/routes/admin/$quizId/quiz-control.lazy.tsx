@@ -1,37 +1,67 @@
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { AdminInGameHeader } from '@/components/modules/admin-in-game-header';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { CenterWrapper } from '@/components/wrappers/center-wrapper';
+import { GET_ROUND_QUESTIONS_API_KEY, getRoundQuestions } from '@/baas/question/get-round-questions';
+import { QuizStatusStatusOptions } from '@/baas/pocketbase-types';
+import { updateCurrentQuestion } from '@/baas/quiz-status/update-current-question';
 
 export const Route = createLazyFileRoute('/admin/$quizId/quiz-control')({
   component: QuizControl,
 })
 
-const MOCK_QUESTIONS = [
-  { content: '2+2', answer: 4, id: 1 },
-  { content: '2+2', answer: 4, id: 2 },
-  { content: '2+2', answer: 4, id: 3 }
-]
-
-
 function QuizControl() {
   const { quizId } = Route.useParams()
   const navigate = useNavigate()
 
-  const [active, setActiveQuestion] = useState<number>(1)
-  // @TODO enum
-  const [status, setStatus] = useState<string>('END_ROUND')
+  const { data } = useQuery({
+    queryKey: [GET_ROUND_QUESTIONS_API_KEY, quizId],
+    queryFn: () => getRoundQuestions(quizId),
+  })
 
-  const lastQuestion = useMemo(() => MOCK_QUESTIONS[MOCK_QUESTIONS.length - 1], [MOCK_QUESTIONS])
+  const [activeQuestionId, setActiveQuestionId] = useState<string>(data?.currentQuestion || '')
 
-  function getActiveQuestionStyles(id: number) {
-    return active === id ? 'border border-green-500' : null
+  useEffect(() => {
+    if (data?.currentQuestion) {
+      setActiveQuestionId(data.currentQuestion)
+    }
+  }, [data?.currentQuestion])
+
+  const [status, setStatus] = useState<QuizStatusStatusOptions | undefined>(data?.status)
+
+  const { mutate: mutateCurrenQuestion } = useMutation({
+    mutationFn: updateCurrentQuestion,
+    onSuccess: ({ newCurrentQuestionId }) => setActiveQuestionId(newCurrentQuestionId),
+  })
+
+  const lastIndex = data?.questions.length || 1
+
+  const lastQuestion = useMemo(() => data?.questions[lastIndex - 1], [data, lastIndex])
+
+  function getActiveQuestionStyles(id: string) {
+    return activeQuestionId === id ? 'border border-green-500' : null
   }
 
   function handleNextQuestion() {
-    setActiveQuestion((prevState) => prevState + 1)
+    const currentQuestionIndex = data?.questions.findIndex(({ id }) => activeQuestionId === id) ?? -1
+
+    if (currentQuestionIndex === -1) {
+      throw new Error('Something went wrong')
+    }
+
+    const nextQuestion = data?.questions[currentQuestionIndex + 1]
+
+    if (!nextQuestion) {
+      throw new Error('Something went wrong')
+    }
+
+    mutateCurrenQuestion({
+      newCurrentQuestionId: nextQuestion.id,
+      quizStatusId: data.quizStatusId
+    })
   }
 
   function handleEndRound() {
@@ -45,21 +75,21 @@ function QuizControl() {
   }
 
   const getSubmitButtonProps = useMemo(() => {
-    if (status === 'END_ROUND') {
+    if (status === QuizStatusStatusOptions.END_QUIZ) {
       return { label: 'Check answers', handler: handleCheckAnswers }
     }
 
-    if (lastQuestion.id !== active) {
+    if (lastQuestion?.id !== activeQuestionId) {
       return { label: 'Next Question', handler: handleNextQuestion }
     }
 
     return { label: 'End Round', handler: handleEndRound }
-  }, [active, lastQuestion.id])
+  }, [activeQuestionId, lastQuestion?.id, status])
 
   return (
     <CenterWrapper>
-      <AdminInGameHeader/>
-      {MOCK_QUESTIONS.map(({ content, answer, id }, index) => (
+      <AdminInGameHeader quizId={quizId}/>
+      {data?.questions.map(({ content, answer, id }, index) => (
         <div className={cn(getActiveQuestionStyles(id), 'self-start rounded-md bg-gray-100/5 w-full px-4 py-3')}
              key={id}>
           <p>Q {index + 1}: {content}</p>
@@ -70,3 +100,4 @@ function QuizControl() {
     </CenterWrapper>
   )
 }
+

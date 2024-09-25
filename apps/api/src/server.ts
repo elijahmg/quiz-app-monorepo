@@ -5,6 +5,7 @@ import cors from 'cors';
 
 export const createServer = (): Express => {
   const app = express();
+
   app
     .disable('x-powered-by')
     .use(morgan('dev'))
@@ -16,8 +17,8 @@ export const createServer = (): Express => {
     return res.json({ message: `hello ${req.params.name}` });
   })
 
-  app.get('/status', (_, res) => {
-    return res.json({ ok: true });
+  app.get('/status', async (_, res) => {
+    return res.json({message: 'hello'});
   });
 
   return app;

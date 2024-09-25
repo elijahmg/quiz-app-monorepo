@@ -1,34 +1,31 @@
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
 import React from 'react'
+import { useMutation } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button'
 import { AdminInGameHeader } from '@/components/modules/admin-in-game-header';
 import { CenterWrapper } from '@/components/wrappers/center-wrapper';
+import { startQuiz } from '@/baas/quiz-status/start-quiz';
 
 export const Route = createLazyFileRoute('/admin/$quizId/')({
   component: IndexQuizAdminScreen,
-  loader: () => ({
-    quizData: 'bla'
-  })
 })
 
 function IndexQuizAdminScreen() {
-  const data = Route.useLoaderData()
-  console.log({ data })
-
   const { quizId } = Route.useParams()
   const navigate = useNavigate()
 
-  async function handleStartQuiz() {
-    await navigate({
+  const { mutate: startQuizMutation } = useMutation({
+    mutationFn: startQuiz,
+    onSuccess: () => navigate({
       to: `/admin/${quizId}/quiz-control`,
     })
-  }
+  })
 
   return (
     <CenterWrapper>
-      <AdminInGameHeader/>
-      <div className="flex flex-col space-y-4">
-        <Button onClick={handleStartQuiz}>Start Quiz</Button>
+      <AdminInGameHeader hideRoundInfo quizId={quizId}/>
+      <div className="flex space-x-4 w-max">
+        <Button onClick={() => startQuizMutation(quizId)}>Start Quiz</Button>
         <Button variant="outline">Edit Quiz</Button>
         <Button variant="destructive">Delete Quiz</Button>
       </div>

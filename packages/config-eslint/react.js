@@ -35,5 +35,7 @@ module.exports = {
   // add rules configurations here
   rules: {
     "import/no-default-export": "off",
+    '@typescript-eslint/no-confusing-void-expression': 'off',
+    'no-await-in-loop': 'off'
   },
 };

@@ -18,9 +18,10 @@ import {
   SelectContent,
   SelectValue
 } from '@/components/ui/select';
+import { createQuiz } from '@/baas/quiz/create-quiz';
 
 interface MainInfoProps {
-  onSuccess?: () => void
+  onSuccess?: (quizId: string) => void
 }
 
 interface Question {
@@ -34,7 +35,7 @@ const question = z.object({
   round: z.string().min(1)
 });
 
-const mainQuizInfoSchema = z.object({
+export const mainQuizInfoSchema = z.object({
   name: z.string().min(4).max(12),
   password: z.string().min(4).max(12),
   pin: z.string().min(4).max(6),
@@ -61,7 +62,7 @@ export function MainInfo({ onSuccess }: MainInfoProps): React.ReactNode {
     name: `questions`
   });
 
-  function onSubmit(data: z.infer<typeof mainQuizInfoSchema>): void {
+  async function onSubmit(data: z.infer<typeof mainQuizInfoSchema>): Promise<void> {
     const parsedQuestions = data.questions.reduce<Record<string, Question[]>>((acc, value) => {
       const question = { content: value.content, answer: value.answer }
 
@@ -78,9 +79,11 @@ export function MainInfo({ onSuccess }: MainInfoProps): React.ReactNode {
       questions: parsedQuestions
     }
 
-    console.log(dataToBackEnd)
+    const quizId = await createQuiz(dataToBackEnd)
 
-    onSuccess?.()
+    console.log({ dataToBackEnd, quizId })
+
+    onSuccess?.(quizId)
   }
 
   function handleAddRound(): void {

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { z } from 'zod';
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { useForm } from 'react-hook-form';
@@ -9,6 +9,7 @@ import { Form } from '@/components/ui/form';
 import { FormInput } from '@/components/modules/form/form-input';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+import { subscribeToQuizStatusUpdate } from '@/baas/quiz-status/subscribe-to-quiz-status-update';
 
 export const Route = createLazyFileRoute('/$quizId/play')({
   component: Play
@@ -21,6 +22,7 @@ const teamAnswerSchema = z.object({
 type SchemaType = z.infer<typeof teamAnswerSchema>
 
 function Play() {
+  const { quizId } = Route.useParams()
   const form = useForm<SchemaType>({
     resolver: zodResolver(teamAnswerSchema),
     defaultValues: {
@@ -29,6 +31,27 @@ function Play() {
   })
 
   const { toast } = useToast()
+
+  const unsubscribe = useRef<{ unsubscribe: () => void } | null>(null)
+
+  const [currentQuestion, setCurrentQuestion] = useState<string | undefined>(undefined)
+
+  function handleIncomingUpdate(newQuestion: string | undefined) {
+    setCurrentQuestion(newQuestion)
+  }
+
+  async function subscribeToUpdate() {
+    unsubscribe.current = await subscribeToQuizStatusUpdate(quizId, handleIncomingUpdate)
+  }
+
+  useEffect(() => {
+    subscribeToUpdate()
+
+    return () => {
+      unsubscribe.current?.unsubscribe()
+    }
+  }, [])
+
 
   function handleSubmitAnswer(data: SchemaType) {
     toast({
@@ -41,7 +64,7 @@ function Play() {
       <TeamInGameHeader/>
       <Form {...form}>
         <form className="space-y-4" onSubmit={form.handleSubmit(handleSubmitAnswer)}>
-          <FormInput form={form} label="Q: 1+1" name="answer"/>
+          <FormInput form={form} label={`Q: ${currentQuestion}`} name="answer"/>
           <Button type="submit">Submit answer</Button>
         </form>
       </Form>
