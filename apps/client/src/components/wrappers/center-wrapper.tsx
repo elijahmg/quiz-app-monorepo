@@ -6,7 +6,7 @@ interface Props {
 
 export function CenterWrapper({ children }: Props) {
   return (
-    <div className="flex flex-col gap-4 justify-center items-center h-[100vh] max-w-screen-lg mx-auto">
+    <div className="max-w-screen-lg mx-auto mt-14 space-y-4 h-[100vh]">
       {children}
     </div>
   )

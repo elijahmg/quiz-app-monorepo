@@ -1,7 +1,11 @@
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
 
-export function AdminInGameHeader() {
+interface Props {
+  hideRoundInfo?: boolean;
+}
+
+export function AdminInGameHeader({ hideRoundInfo }: Props) {
 
   return (
     <>
@@ -12,9 +16,11 @@ export function AdminInGameHeader() {
         </div>
         <Badge className="self-baseline">Teams online: 7</Badge>
       </div>
-      <p className="bg-gray-100 px-4 py-3 w-full rounded-md font-semibold">
-        Round 1: Math
-      </p>
+      {!hideRoundInfo &&
+          <p className="bg-gray-100 px-4 py-3 w-full rounded-md font-semibold">
+              Round 1: Math
+          </p>
+      }
     </>
   )
 }

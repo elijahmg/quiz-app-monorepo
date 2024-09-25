@@ -25,6 +25,9 @@ const AdminQuizIdTeamsOverviewLazyImport = createFileRoute(
 const AdminQuizIdQuizControlLazyImport = createFileRoute(
   '/admin/$quizId/quiz-control',
 )()
+const AdminQuizIdGameOverviewLazyImport = createFileRoute(
+  '/admin/$quizId/game-overview',
+)()
 
 // Create/Update Routes
 
@@ -64,6 +67,14 @@ const AdminQuizIdQuizControlLazyRoute = AdminQuizIdQuizControlLazyImport.update(
   import('./routes/admin/$quizId/quiz-control.lazy').then((d) => d.Route),
 )
 
+const AdminQuizIdGameOverviewLazyRoute =
+  AdminQuizIdGameOverviewLazyImport.update({
+    path: '/admin/$quizId/game-overview',
+    getParentRoute: () => rootRoute,
+  } as any).lazy(() =>
+    import('./routes/admin/$quizId/game-overview.lazy').then((d) => d.Route),
+  )
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -73,6 +84,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/admin/$quizId/game-overview': {
+      id: '/admin/$quizId/game-overview'
+      path: '/admin/$quizId/game-overview'
+      fullPath: '/admin/$quizId/game-overview'
+      preLoaderRoute: typeof AdminQuizIdGameOverviewLazyImport
       parentRoute: typeof rootRoute
     }
     '/admin/$quizId/quiz-control': {
@@ -110,6 +128,7 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
+  '/admin/$quizId/game-overview': typeof AdminQuizIdGameOverviewLazyRoute
   '/admin/$quizId/quiz-control': typeof AdminQuizIdQuizControlLazyRoute
   '/admin/$quizId/teams-overview': typeof AdminQuizIdTeamsOverviewLazyRoute
   '/admin/$quizId': typeof AdminQuizIdIndexLazyRoute
@@ -118,6 +137,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
+  '/admin/$quizId/game-overview': typeof AdminQuizIdGameOverviewLazyRoute
   '/admin/$quizId/quiz-control': typeof AdminQuizIdQuizControlLazyRoute
   '/admin/$quizId/teams-overview': typeof AdminQuizIdTeamsOverviewLazyRoute
   '/admin/$quizId': typeof AdminQuizIdIndexLazyRoute
@@ -127,6 +147,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexLazyRoute
+  '/admin/$quizId/game-overview': typeof AdminQuizIdGameOverviewLazyRoute
   '/admin/$quizId/quiz-control': typeof AdminQuizIdQuizControlLazyRoute
   '/admin/$quizId/teams-overview': typeof AdminQuizIdTeamsOverviewLazyRoute
   '/admin/$quizId/': typeof AdminQuizIdIndexLazyRoute
@@ -137,6 +158,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin/$quizId/game-overview'
     | '/admin/$quizId/quiz-control'
     | '/admin/$quizId/teams-overview'
     | '/admin/$quizId'
@@ -144,6 +166,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin/$quizId/game-overview'
     | '/admin/$quizId/quiz-control'
     | '/admin/$quizId/teams-overview'
     | '/admin/$quizId'
@@ -151,6 +174,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/admin/$quizId/game-overview'
     | '/admin/$quizId/quiz-control'
     | '/admin/$quizId/teams-overview'
     | '/admin/$quizId/'
@@ -160,6 +184,7 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
+  AdminQuizIdGameOverviewLazyRoute: typeof AdminQuizIdGameOverviewLazyRoute
   AdminQuizIdQuizControlLazyRoute: typeof AdminQuizIdQuizControlLazyRoute
   AdminQuizIdTeamsOverviewLazyRoute: typeof AdminQuizIdTeamsOverviewLazyRoute
   AdminQuizIdIndexLazyRoute: typeof AdminQuizIdIndexLazyRoute
@@ -168,6 +193,7 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
+  AdminQuizIdGameOverviewLazyRoute: AdminQuizIdGameOverviewLazyRoute,
   AdminQuizIdQuizControlLazyRoute: AdminQuizIdQuizControlLazyRoute,
   AdminQuizIdTeamsOverviewLazyRoute: AdminQuizIdTeamsOverviewLazyRoute,
   AdminQuizIdIndexLazyRoute: AdminQuizIdIndexLazyRoute,
@@ -187,6 +213,7 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/admin/$quizId/game-overview",
         "/admin/$quizId/quiz-control",
         "/admin/$quizId/teams-overview",
         "/admin/$quizId/",
@@ -195,6 +222,9 @@ export const routeTree = rootRoute
     },
     "/": {
       "filePath": "index.lazy.tsx"
+    },
+    "/admin/$quizId/game-overview": {
+      "filePath": "admin/$quizId/game-overview.lazy.tsx"
     },
     "/admin/$quizId/quiz-control": {
       "filePath": "admin/$quizId/quiz-control.lazy.tsx"
