@@ -3,8 +3,9 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 
 // Import the generated route tree
-import { routeTree } from './routeTree.gen'
 import { createRouter, RouterProvider } from '@tanstack/react-router';
+import { Toaster } from '@/components/ui/toaster';
+import { routeTree } from './routeTree.gen'
 
 // Create a new router instance
 const router = createRouter({ routeTree })
@@ -23,6 +24,7 @@ if (el) {
   root.render(
     <React.StrictMode>
       <RouterProvider router={router}/>
+      <Toaster />
     </React.StrictMode>
   );
 } else {
