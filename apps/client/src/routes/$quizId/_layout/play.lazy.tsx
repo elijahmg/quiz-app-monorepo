@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { z } from 'zod'
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
 import { useForm } from 'react-hook-form'
@@ -13,6 +13,7 @@ import { useToast } from '@/hooks/use-toast'
 import { useTeamData } from '@/hooks/use-team-data'
 import { submitTeamAnswer } from '@/baas/team-answers/submit-team-answer'
 import { usePlayerGameState } from '@/state/player-game.state';
+import { QuizStatusStatusOptions } from '@/baas/pocketbase-types';
 
 export const Route = createLazyFileRoute('/$quizId/_layout/play')({
   component: Play,
@@ -25,7 +26,9 @@ const teamAnswerSchema = z.object({
 type SchemaType = z.infer<typeof teamAnswerSchema>
 
 function Play() {
+  const { quizId } = Route.useParams()
   const navigate = useNavigate()
+
   const { teamId } = useTeamData()
   const { toast } = useToast()
 
@@ -37,6 +40,18 @@ function Play() {
       answer: '',
     },
   })
+
+  useEffect(() => {
+    if (playerGameState.status === QuizStatusStatusOptions.END_ROUND) {
+      navigate({
+        to: `/${quizId}/check-answers`
+      })
+    }
+  }, [playerGameState.status]);
+
+  useEffect(() => {
+    form.reset()
+  }, [playerGameState.questionId]);
 
   const { mutate: mutateSubmitTeamAnswer } = useMutation({
     mutationFn: submitTeamAnswer,
@@ -65,7 +80,7 @@ function Play() {
 
   return (
     <CenterWrapper>
-      <TeamInGameHeader />
+      <TeamInGameHeader/>
       <Form {...form}>
         <form
           className="space-y-4"
