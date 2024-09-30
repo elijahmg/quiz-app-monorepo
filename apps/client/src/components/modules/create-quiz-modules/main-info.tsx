@@ -81,8 +81,6 @@ export function MainInfo({ onSuccess }: MainInfoProps): React.ReactNode {
 
     const quizId = await createQuiz(dataToBackEnd)
 
-    console.log({ dataToBackEnd, quizId })
-
     onSuccess?.(quizId)
   }
 
