@@ -13,7 +13,8 @@ interface CallbackArgs {
 
 export async function subscribeToQuizStatusUpdate(quizId: string, callback: (callbackArgs: CallbackArgs) => void) {
   const quizStatus = await db.quizStatus().getFirstListItem<QuizStatusResponse<ExpCurrentQuestion>>(`quiz_via_quiz_status.id = "${quizId}"`, {
-    expand: 'current_question'
+    expand: 'current_question',
+    requestKey: 'SUBSCRIPTION'
   })
 
   callback({

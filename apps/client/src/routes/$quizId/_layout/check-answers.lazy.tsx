@@ -78,7 +78,7 @@ function CheckAnswersPage() {
   useEffect(() => {
     if (status === QuizStatusStatusOptions.EVALUCATION) {
       navigate({
-        to: ''
+        to:`/${quizId}/break`
       })
     }
   }, [status]);

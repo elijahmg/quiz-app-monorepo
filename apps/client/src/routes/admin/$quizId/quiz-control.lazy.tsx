@@ -9,6 +9,7 @@ import { GET_ROUND_QUESTIONS_API_KEY, getRoundQuestions } from '@/baas/question/
 import { QuizStatusStatusOptions } from '@/baas/pocketbase-types';
 import { updateCurrentQuestion } from '@/baas/quiz-status/update-current-question';
 import { endRound } from '@/baas/round/end-round';
+import { moveQuizToEvaluationState } from '@/baas/quiz-status/move-quiz-to-evaluation-state';
 
 export const Route = createLazyFileRoute('/admin/$quizId/quiz-control')({
   component: QuizControl,
@@ -38,6 +39,20 @@ function QuizControl() {
     onSuccess: ({ newCurrentQuestionId, }) => setActiveQuestionId(newCurrentQuestionId),
   })
 
+  const { mutate: mutateMoveQuizToEvaluationState } = useMutation({
+    mutationFn: moveQuizToEvaluationState,
+    onSuccess: () => {
+      navigate({
+        to: `/admin/${quizId}/teams-overview`,
+      })
+    }
+  })
+
+  const { mutate: mutateEndRound } = useMutation({
+    mutationFn: endRound,
+    onSuccess: () => setStatus(QuizStatusStatusOptions.END_ROUND)
+  })
+
   const lastIndex = data?.questions.length || 1
 
   const lastQuestion = useMemo(() => data?.questions[lastIndex - 1], [data, lastIndex])
@@ -65,30 +80,16 @@ function QuizControl() {
     })
   }
 
-  async function handleEndRound() {
-    // @TODO useMutation
-    await endRound(quizId)
-
-    setStatus(QuizStatusStatusOptions.END_ROUND)
-  }
-
-  async function handleCheckAnswers() {
-    // @TODO useMutation
-    await navigate({
-      to: `/admin/${quizId}/teams-overview`,
-    })
-  }
-
   const getSubmitButtonProps = useMemo(() => {
     if (status === QuizStatusStatusOptions.END_ROUND) {
-      return { label: 'Check answers', handler: handleCheckAnswers }
+      return { label: 'Check answers', handler: () => mutateMoveQuizToEvaluationState(quizId) }
     }
 
     if (lastQuestion?.id !== activeQuestionId) {
       return { label: 'Next Question', handler: handleNextQuestion }
     }
 
-    return { label: 'End Round', handler: handleEndRound }
+    return { label: 'End Round', handler: () => mutateEndRound(quizId) }
   }, [activeQuestionId, lastQuestion?.id, status])
 
   return (
