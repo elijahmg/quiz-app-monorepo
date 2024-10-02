@@ -13,6 +13,7 @@ import type { RadioButtonOption } from '@/components/modules/form/form-radio-but
 import { FormRadioButtons } from '@/components/modules/form/form-radio-buttons';
 import { Form } from '@/components/ui/form';
 import { evaluateTeamsAnswers } from '@/baas/team-answers/evaluate-teams-answers';
+import { moveQuizToScoreViewingState } from '@/baas/quiz-status/move-quiz-to-score-viewing-state';
 
 export const Route = createLazyFileRoute('/admin/$quizId/teams-overview')({
   component: TeasOverview,
@@ -49,11 +50,16 @@ function TeasOverview() {
     queryFn: () => getAdminTeamsAnswers(quizId)
   })
 
-  const { mutate: submitTeamsScores } = useMutation({
-    mutationFn: evaluateTeamsAnswers,
+  const { mutate: mutateMoveQuizToScoreViewingState } = useMutation({
+    mutationFn: () => moveQuizToScoreViewingState(quizId),
     onSuccess: () => navigate({
       to: `/admin/${quizId}/game-overview`,
     })
+  })
+
+  const { mutate: submitTeamsScores } = useMutation({
+    mutationFn: evaluateTeamsAnswers,
+    onSuccess: () => mutateMoveQuizToScoreViewingState()
   })
 
   useEffect(() => {
@@ -63,6 +69,7 @@ function TeasOverview() {
       })
     }
   }, [data]);
+
 
   async function handleSubmitResults(data: AnswerSchemaType) {
     const parsedScoredAnswers = Object.values(data).flat().map((scoredTeamAnswer) => ({

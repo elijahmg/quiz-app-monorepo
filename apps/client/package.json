@@ -7,7 +7,8 @@
     "clean": "rm -rf dist",
     "dev": "vite --host 0.0.0.0 --port 3001 --clearScreen false",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint src/"
+    "lint": "eslint src/",
+    "db:fill":  "bun run db-fill/index.ts"
   },
   "dependencies": {
     "@emotion/styled": "^11.13.0",

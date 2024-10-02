@@ -1,39 +1,38 @@
 import React from 'react'
 import { Table, TableHead, TableHeader, TableRow, TableBody, TableCell } from '@/components/ui/table';
 
-const MOCK = {
-  'Team Alpha': {
-      total: 3,
-      math: 2,
-      music: 1
-  },
-  'Team Beta': {
-      total: 2,
-      math: 1,
-      music: 1
-  }
+type RoundName = string
+type TeamName = string
+
+type TeamAnswer = Record<RoundName, number>
+
+export type TeamScores = Record<TeamName, TeamAnswer>
+
+interface Props {
+  teamsScores: TeamScores
 }
 
-
-export function TeamsTable() {
-  const rounds = ['math', 'music']
+export function TeamsTable({ teamsScores }: Props) {
+  const randomTeamName = Object.keys(teamsScores)[0]
+  const rounds = Object.keys(teamsScores[randomTeamName])
 
   return (
     <Table>
       <TableHeader>
         <TableRow>
           <TableHead className="text-left">Team</TableHead>
-          {rounds.map(round => (<TableHead key={round}>{round}</TableHead>))}
-          <TableHead className="text-right">Total</TableHead>
+          {rounds.map(round => (
+            <TableHead className={round === 'total' ? 'text-right' : ''} key={round}>{round}</TableHead>))}
         </TableRow>
       </TableHeader>
       <TableBody>
-        {Object.keys(MOCK).map((key) => (
-          <TableRow key={key}>
-            <TableCell className="font-medium">{key}</TableCell>
-            <TableCell>{MOCK[key].math}</TableCell>
-            <TableCell>{MOCK[key].music}</TableCell>
-            <TableCell className="text-right">{MOCK[key].total}</TableCell>
+        {Object.keys(teamsScores).map((teamName) => (
+          <TableRow key={teamName}>
+            <TableCell className="font-medium">{teamName}</TableCell>
+            {Object.keys(teamsScores[teamName]).map((round) => (
+              <TableCell className={round === 'total' ? 'text-right' : ''}
+                         key={round}>{teamsScores[teamName][round]}</TableCell>
+            ))}
           </TableRow>
         ))}
       </TableBody>

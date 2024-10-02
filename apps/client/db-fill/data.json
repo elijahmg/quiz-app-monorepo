@@ -1,0 +1,37 @@
+{
+  "name": "PubQuiz01",
+  "password": "quiz1234",
+  "pin": "1234",
+  "questions": {
+    "Round 1": [
+      {
+        "content": "What is the capital of France?",
+        "answer": "Paris"
+      },
+      {
+        "content": "Which planet is known as the Red Planet?",
+        "answer": "Mars"
+      }
+    ],
+    "Round 2": [
+      {
+        "content": "Which element has the chemical symbol 'O'?",
+        "answer": "Oxygen"
+      },
+      {
+        "content": "How many players are there in a soccer team?",
+        "answer": "11"
+      }
+    ],
+    "Round 3": [
+      {
+        "content": "Who painted the Mona Lisa?",
+        "answer": "Leonardo da Vinci"
+      },
+      {
+        "content": "Which country is home to the kangaroo?",
+        "answer": "Australia"
+      }
+    ]
+  }
+}
