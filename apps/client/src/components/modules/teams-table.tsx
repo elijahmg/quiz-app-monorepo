@@ -1,38 +1,38 @@
 import React from 'react'
 import { Table, TableHead, TableHeader, TableRow, TableBody, TableCell } from '@/components/ui/table';
+import type { Team } from '@/baas/team-answers/get-admin-total-teams-results';
 
-type RoundName = string
-type TeamName = string
-
-type TeamAnswer = Record<RoundName, number>
-
-export type TeamScores = Record<TeamName, TeamAnswer>
-
-interface Props {
-  teamsScores: TeamScores
+export interface TeamScores {
+  teamsScores: Map<string, Team>,
+  rounds: Set<string>
 }
 
-export function TeamsTable({ teamsScores }: Props) {
-  const randomTeamName = Object.keys(teamsScores)[0]
-  const rounds = Object.keys(teamsScores[randomTeamName])
+interface Props {
+  teamsScoresData: TeamScores
+}
+
+export function TeamsTable({ teamsScoresData }: Props) {
+  const { rounds, teamsScores } = teamsScoresData
 
   return (
     <Table>
       <TableHeader>
         <TableRow>
           <TableHead className="text-left">Team</TableHead>
-          {rounds.map(round => (
+          {[...rounds.values()].map(round => (
             <TableHead className={round === 'total' ? 'text-right' : ''} key={round}>{round}</TableHead>))}
+          <TableHead className="text-right">Total</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {Object.keys(teamsScores).map((teamName) => (
+        {[...teamsScores.keys()].map((teamName) => (
           <TableRow key={teamName}>
             <TableCell className="font-medium">{teamName}</TableCell>
-            {Object.keys(teamsScores[teamName]).map((round) => (
+            {[...teamsScores.get(teamName)!.rounds.entries()].map(([round, score]) => (
               <TableCell className={round === 'total' ? 'text-right' : ''}
-                         key={round}>{teamsScores[teamName][round]}</TableCell>
+                         key={round}>{score}</TableCell>
             ))}
+            <TableCell className="text-right">{teamsScores.get(teamName)!.total}</TableCell>
           </TableRow>
         ))}
       </TableBody>

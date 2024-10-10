@@ -12,9 +12,31 @@ interface ExpTeamAnswers {
   question: QuestionResponse<ExpQuestionResponse>
 }
 
-type TeamResult = Record<string, number>
+type Response = Map<string, Team>
 
-type Response = Record<string, TeamResult | undefined>
+export class Team {
+  name: string
+  rounds = new Map<string, number>()
+  total = 0
+
+  constructor(name: string) {
+    this.name = name
+  }
+
+  private setTotal(score: number) {
+    this.total = this.total + score
+  }
+
+  setRoundScore(roundName: string, score: number) {
+    if (this.rounds.has(roundName)) {
+      this.rounds.set(roundName, this.rounds.get(roundName)! + score)
+    } else {
+      this.rounds.set(roundName, score)
+    }
+
+    this.setTotal(score)
+  }
+}
 
 export async function getAdminTotalTeamsResults(quizId: string) {
   const { items } = await db.teamAnswers().getList<TeamAnswersResponse<ExpTeamAnswers>>(1, 100, {
@@ -23,30 +45,26 @@ export async function getAdminTotalTeamsResults(quizId: string) {
     sort: '+created'
   })
 
-  return items.reduce<Response>((acc, teamAnswer) => {
+  const rounds = new Set<string>()
+
+  const teamsScores = items.reduce<Response>((acc, teamAnswer) => {
     const teamName = teamAnswer.expand!.team.name
     const roundName = teamAnswer.expand!.question.expand!.round.name
     const score = teamAnswer.score
 
-    if (acc[teamName]?.[roundName]) {
-      acc[teamName][roundName] = acc[teamName][roundName] + score
-      acc[teamName].total = (acc[teamName].total || 0) + score
+    rounds.add(roundName)
 
-      return acc
-    }
+    const team = acc.get(teamName) || new Team(teamName)
 
-    if (acc[teamName] && !acc[teamName][roundName]) {
-      acc[teamName][roundName] = score
-      acc[teamName].total = score
+    team.setRoundScore(roundName, score)
 
-      return acc
-    }
-
-    acc[teamName] = {
-      [roundName]: score,
-      total: score
-    }
+    acc.set(teamName, team)
 
     return acc
-  }, {})
+  }, new Map())
+
+  return {
+    teamsScores,
+    rounds,
+  }
 }

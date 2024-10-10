@@ -26,6 +26,8 @@ function GameOverview() {
     queryFn: () => getAdminTotalTeamsResults(quizId)
   })
 
+  console.log('teamsScores', teamsScores)
+
   const { data: nextQuestion } = useQuery({
     queryKey: [GET_NEXT_QUESTION_ID_API_KEY, quizId],
     queryFn: () => getNextQuestionId(quizId)
@@ -48,7 +50,7 @@ function GameOverview() {
   return (
     <CenterWrapper>
       <AdminInGameHeader hideRoundInfo quizId={quizId}/>
-      {Boolean(teamsScores) && <TeamsTable teamsScores={teamsScores as TeamScores}/>}
+      {Boolean(teamsScores) && <TeamsTable teamsScoresData={teamsScores as TeamScores}/>}
       <Button onClick={handleStartAnotherRound}>Start another round</Button>
     </CenterWrapper>
   )
