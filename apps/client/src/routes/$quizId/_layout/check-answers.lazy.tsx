@@ -60,6 +60,8 @@ function CheckAnswersPage() {
     queryKey: [GET_TEAM_ANSWERS_API_KEY, quizId, teamId],
   })
 
+  console.log('data', data)
+
   const { mutate: mutateUpdateBatchTeamAnswers } = useMutation({
     mutationFn: updateBatchTeamsAnswers,
     onSuccess: () => toast({
@@ -88,6 +90,8 @@ function CheckAnswersPage() {
       teamAnswerId: newAnswerData.teamAnswerId,
       answer: newAnswerData.answer
     }))
+
+    console.log({parsedAnswers})
 
     mutateUpdateBatchTeamAnswers({
       newTeamAnswers: parsedAnswers

@@ -6,6 +6,7 @@ interface IncomingUpdateArgs {
   question?: string
   questionId?: string
   status: QuizStatusStatusOptions
+  roundName?: string
 }
 
 const PlayerGameStateContext = React.createContext<IncomingUpdateArgs>({} as IncomingUpdateArgs)
@@ -21,8 +22,8 @@ export function PlayerGameStateProvider({ children, quizId }: Props) {
 
   const [currentQuizStatus, setCurrentQuizStatus] = useState<IncomingUpdateArgs>({} as IncomingUpdateArgs)
 
-  function handleIncomingUpdate({ question, questionId, status, }: IncomingUpdateArgs) {
-    setCurrentQuizStatus({ question, questionId, status })
+  function handleIncomingUpdate({ question, questionId, status, roundName }: IncomingUpdateArgs) {
+    setCurrentQuizStatus({ question, questionId, status, roundName })
   }
 
   async function subscribeToUpdate() {

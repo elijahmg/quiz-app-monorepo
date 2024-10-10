@@ -43,6 +43,15 @@ function Play() {
 
   useEffect(() => {
     if (playerGameState.status === QuizStatusStatusOptions.END_ROUND) {
+      if (playerGameState.questionId && teamId) {
+        // saves even empty answer
+        mutateSubmitTeamAnswer({
+          questionId: playerGameState.questionId,
+          teamId,
+          answer: form.getValues('answer'),
+        })
+      }
+
       navigate({
         to: `/${quizId}/check-answers`
       })
@@ -50,15 +59,20 @@ function Play() {
   }, [playerGameState.status]);
 
   useEffect(() => {
+    if (playerGameState.questionId && teamId) {
+      // saves even empty answer
+      mutateSubmitTeamAnswer({
+        questionId: playerGameState.questionId,
+        teamId,
+        answer: form.getValues('answer'),
+      })
+    }
+
     form.reset()
   }, [playerGameState.questionId]);
 
   const { mutate: mutateSubmitTeamAnswer } = useMutation({
     mutationFn: submitTeamAnswer,
-    onSuccess: () =>
-      toast({
-        description: 'Answer has been submitted',
-      }),
   })
 
   function handleSubmitAnswer(data: SchemaType) {
@@ -72,10 +86,16 @@ function Play() {
     }
 
     mutateSubmitTeamAnswer({
-      questionId: playerGameState.questionId,
-      teamId,
-      answer: data.answer,
-    })
+        questionId: playerGameState.questionId,
+        teamId,
+        answer: data.answer,
+      },
+      {
+        onSuccess: () => toast({
+          description: 'Answer has been submitted',
+        })
+      },
+    )
   }
 
   return (
