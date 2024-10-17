@@ -1,7 +1,12 @@
-import type { QuestionResponse, QuizResponse, QuizStatusResponse, RoundResponse } from '@/baas/pocketbase-types';
-import { db } from '../database';
+import type {
+  QuestionResponse,
+  QuizResponse,
+  QuizStatusResponse,
+  RoundResponse
+} from '@/baas/pocketbase-types'
+import { db } from '../database'
 
-export const GET_ADMIN_HEADER_DATA_API_KEY = 'GET_ADMIN_HEADER_DATA';
+export const GET_ADMIN_HEADER_DATA_API_KEY = 'GET_ADMIN_HEADER_DATA'
 
 interface ExRound {
   round: RoundResponse
@@ -25,6 +30,7 @@ export async function getAdminHeaderData(quizId: string) {
   return {
     pin: quiz.pin,
     name: quiz.name,
-    currentRoundName: quiz.expand?.quiz_status.expand?.current_question.expand?.round.name
+    currentRoundName:
+      quiz.expand?.quiz_status.expand?.current_question.expand?.round.name
   }
 }

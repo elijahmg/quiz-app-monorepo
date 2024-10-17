@@ -1,7 +1,13 @@
-import { db } from '@/baas/database';
-import type { QuestionResponse, RoundResponse, TeamAnswersResponse, TeamResponse } from '@/baas/pocketbase-types';
+import { db } from '@/baas/database'
+import type {
+  QuestionResponse,
+  RoundResponse,
+  TeamAnswersResponse,
+  TeamResponse
+} from '@/baas/pocketbase-types'
 
-export const GET_ADMIN_TOTAL_TEAMS_RESULTS_API_KEY = 'GET_ADMIN_TOTAL_TEAMS_RESULTS_API_KEY'
+export const GET_ADMIN_TOTAL_TEAMS_RESULTS_API_KEY =
+  'GET_ADMIN_TOTAL_TEAMS_RESULTS_API_KEY'
 
 interface ExpQuestionResponse {
   round: RoundResponse
@@ -39,11 +45,13 @@ export class Team {
 }
 
 export async function getAdminTotalTeamsResults(quizId: string) {
-  const { items } = await db.teamAnswers().getList<TeamAnswersResponse<ExpTeamAnswers>>(1, 100, {
-    filter: `question.round.quiz = "${quizId}"`,
-    expand: 'question.round,team',
-    sort: '+created'
-  })
+  const { items } = await db
+    .teamAnswers()
+    .getList<TeamAnswersResponse<ExpTeamAnswers>>(1, 100, {
+      filter: `question.round.quiz = "${quizId}"`,
+      expand: 'question.round,team',
+      sort: '+created'
+    })
 
   const rounds = new Set<string>()
 
@@ -65,6 +73,6 @@ export async function getAdminTotalTeamsResults(quizId: string) {
 
   return {
     teamsScores,
-    rounds,
+    rounds
   }
 }

@@ -1,7 +1,13 @@
-import React from 'react';
-import { createPortal } from 'react-dom';
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import React from 'react'
+import { createPortal } from 'react-dom'
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter
+} from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 
 interface ModalProps {
   title: string
@@ -19,9 +25,7 @@ export function Modal({ children, title, onSubmit, open }: ModalProps) {
         <CardHeader>
           <CardTitle>{title}</CardTitle>
         </CardHeader>
-        <CardContent>
-          {children}
-        </CardContent>
+        <CardContent>{children}</CardContent>
         <CardFooter>
           <Button onClick={onSubmit}>Submit</Button>
         </CardFooter>

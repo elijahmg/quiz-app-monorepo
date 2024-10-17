@@ -1,7 +1,13 @@
-import React from 'react';
-import type { FieldValues, Path, UseFormReturn } from 'react-hook-form';
-import { FormField,FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+import React from 'react'
+import type { FieldValues, Path, UseFormReturn } from 'react-hook-form'
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
 
 interface FormInputProps<T extends FieldValues> {
   name: Path<T>
@@ -9,8 +15,11 @@ interface FormInputProps<T extends FieldValues> {
   form: UseFormReturn<T>
 }
 
-export function FormInput<T extends FieldValues>({ name, label, form }: FormInputProps<T>) {
-  
+export function FormInput<T extends FieldValues>({
+  name,
+  label,
+  form
+}: FormInputProps<T>) {
   return (
     <FormField
       control={form.control}

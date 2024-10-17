@@ -12,15 +12,15 @@ import { Button } from '@/components/ui/button'
 import { useToast } from '@/hooks/use-toast'
 import { useTeamData } from '@/hooks/use-team-data'
 import { submitTeamAnswer } from '@/baas/team-answers/submit-team-answer'
-import { usePlayerGameState } from '@/state/player-game.state';
-import { QuizStatusStatusOptions } from '@/baas/pocketbase-types';
+import { usePlayerGameState } from '@/state/player-game.state'
+import { QuizStatusStatusOptions } from '@/baas/pocketbase-types'
 
 export const Route = createLazyFileRoute('/$quizId/_layout/play')({
-  component: Play,
+  component: Play
 })
 
 const teamAnswerSchema = z.object({
-  answer: z.string().min(1),
+  answer: z.string().min(1)
 })
 
 type SchemaType = z.infer<typeof teamAnswerSchema>
@@ -37,8 +37,8 @@ function Play() {
   const form = useForm<SchemaType>({
     resolver: zodResolver(teamAnswerSchema),
     defaultValues: {
-      answer: '',
-    },
+      answer: ''
+    }
   })
 
   useEffect(() => {
@@ -48,7 +48,7 @@ function Play() {
         mutateSubmitTeamAnswer({
           questionId: playerGameState.questionId,
           teamId,
-          answer: form.getValues('answer'),
+          answer: form.getValues('answer')
         })
       }
 
@@ -56,7 +56,7 @@ function Play() {
         to: `/${quizId}/check-answers`
       })
     }
-  }, [playerGameState.status]);
+  }, [playerGameState.status])
 
   useEffect(() => {
     if (playerGameState.questionId && teamId) {
@@ -64,43 +64,45 @@ function Play() {
       mutateSubmitTeamAnswer({
         questionId: playerGameState.questionId,
         teamId,
-        answer: form.getValues('answer'),
+        answer: form.getValues('answer')
       })
     }
 
     form.reset()
-  }, [playerGameState.questionId]);
+  }, [playerGameState.questionId])
 
   const { mutate: mutateSubmitTeamAnswer } = useMutation({
-    mutationFn: submitTeamAnswer,
+    mutationFn: submitTeamAnswer
   })
 
   function handleSubmitAnswer(data: SchemaType) {
     if (!playerGameState.questionId) {
       toast({
         description: 'Hm... Something is wrong, try to refresh page',
-        variant: 'destructive',
+        variant: 'destructive'
       })
 
       return
     }
 
-    mutateSubmitTeamAnswer({
+    mutateSubmitTeamAnswer(
+      {
         questionId: playerGameState.questionId,
         teamId,
-        answer: data.answer,
+        answer: data.answer
       },
       {
-        onSuccess: () => toast({
-          description: 'Answer has been submitted',
-        })
-      },
+        onSuccess: () =>
+          toast({
+            description: 'Answer has been submitted'
+          })
+      }
     )
   }
 
   return (
     <CenterWrapper>
-      <TeamInGameHeader/>
+      <TeamInGameHeader />
       <Form {...form}>
         <form
           className="space-y-4"

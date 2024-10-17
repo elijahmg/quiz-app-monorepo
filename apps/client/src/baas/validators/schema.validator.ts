@@ -1,4 +1,4 @@
-import { z, ZodError } from "zod";
+import { z, ZodError } from 'zod'
 
 export function schemaValidator<T>(schema: z.ZodObject<any, any>, data: T) {
   try {

@@ -28,6 +28,6 @@ This Turborepo has some additional tools already setup for you:
 - [Jest](https://jestjs.io) test runner for all things JavaScript
 - [Prettier](https://prettier.io) for code formatting
 
-
 ### Useful scripts
+
 - `bunx pocketbase-typegen --db ~/pocketbase/pb_data/data.db --out pocketbase-types.ts`: generates TS types from Pocketbase

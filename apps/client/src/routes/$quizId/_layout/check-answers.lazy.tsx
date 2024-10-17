@@ -1,23 +1,26 @@
 import React, { useEffect } from 'react'
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { z } from 'zod';
-import { useFieldArray, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { CenterWrapper } from '@/components/wrappers/center-wrapper';
-import { TeamInGameHeader } from '@/components/modules/team-in-game-header';
-import { useTeamData } from '@/hooks/use-team-data';
-import { GET_TEAM_ANSWERS_API_KEY, getTeamAnswer } from '@/baas/team-answers/get-team-answers';
-import { Form } from '@/components/ui/form';
-import { FormInput } from '@/components/modules/form/form-input';
-import { Button } from '@/components/ui/button';
-import { updateBatchTeamsAnswers } from '@/baas/team-answers/update-batch-teams-answers';
-import { usePlayerGameState } from '@/state/player-game.state';
-import { QuizStatusStatusOptions } from '@/baas/pocketbase-types';
-import { useToast } from '@/hooks/use-toast';
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { z } from 'zod'
+import { useFieldArray, useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { CenterWrapper } from '@/components/wrappers/center-wrapper'
+import { TeamInGameHeader } from '@/components/modules/team-in-game-header'
+import { useTeamData } from '@/hooks/use-team-data'
+import {
+  GET_TEAM_ANSWERS_API_KEY,
+  getTeamAnswer
+} from '@/baas/team-answers/get-team-answers'
+import { Form } from '@/components/ui/form'
+import { FormInput } from '@/components/modules/form/form-input'
+import { Button } from '@/components/ui/button'
+import { updateBatchTeamsAnswers } from '@/baas/team-answers/update-batch-teams-answers'
+import { usePlayerGameState } from '@/state/player-game.state'
+import { QuizStatusStatusOptions } from '@/baas/pocketbase-types'
+import { useToast } from '@/hooks/use-toast'
 
 export const Route = createLazyFileRoute('/$quizId/_layout/check-answers')({
-  component: CheckAnswersPage,
+  component: CheckAnswersPage
 })
 
 const teamAnswerSchema = z.object({
@@ -35,7 +38,7 @@ type Schema = z.infer<typeof teamAnswersSchema>
 
 function CheckAnswersPage() {
   const { quizId } = Route.useParams()
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const { teamId } = useTeamData()
 
@@ -53,37 +56,41 @@ function CheckAnswersPage() {
   const { fields } = useFieldArray({
     control: form.control,
     name: `answers`
-  });
+  })
 
   const { data } = useQuery({
     queryFn: () => getTeamAnswer({ quizId, teamId }),
-    queryKey: [GET_TEAM_ANSWERS_API_KEY, quizId, teamId],
+    queryKey: [GET_TEAM_ANSWERS_API_KEY, quizId, teamId]
   })
 
   console.log('data', data)
 
   const { mutate: mutateUpdateBatchTeamAnswers } = useMutation({
     mutationFn: updateBatchTeamsAnswers,
-    onSuccess: () => toast({
-      description: 'Answers have been submitted'
-    })
+    onSuccess: () =>
+      toast({
+        description: 'Answers have been submitted'
+      })
   })
 
   useEffect(() => {
-    form.setValue('answers', data?.answers.map(({ question, answer, id }) => ({
-      question,
-      answer,
-      teamAnswerId: id
-    })) || [])
-  }, [data]);
+    form.setValue(
+      'answers',
+      data?.answers.map(({ question, answer, id }) => ({
+        question,
+        answer,
+        teamAnswerId: id
+      })) || []
+    )
+  }, [data])
 
   useEffect(() => {
     if (status === QuizStatusStatusOptions.EVALUCATION) {
       navigate({
-        to:`/${quizId}/break`
+        to: `/${quizId}/break`
       })
     }
-  }, [status]);
+  }, [status])
 
   function handleSubmitNewAnswers(data: Schema) {
     const parsedAnswers = data.answers.map((newAnswerData) => ({
@@ -91,7 +98,7 @@ function CheckAnswersPage() {
       answer: newAnswerData.answer
     }))
 
-    console.log({parsedAnswers})
+    console.log({ parsedAnswers })
 
     mutateUpdateBatchTeamAnswers({
       newTeamAnswers: parsedAnswers
@@ -100,12 +107,19 @@ function CheckAnswersPage() {
 
   return (
     <CenterWrapper>
-      <TeamInGameHeader/>
+      <TeamInGameHeader />
       <Form {...form}>
-        <form className="space-y-4" onSubmit={form.handleSubmit(handleSubmitNewAnswers)}>
+        <form
+          className="space-y-4"
+          onSubmit={form.handleSubmit(handleSubmitNewAnswers)}
+        >
           {fields.map((field, index) => (
-            <FormInput form={form} key={field.teamAnswerId} label={`Q ${index + 1}: ${field.question}`}
-                       name={`answers.${index}.answer`}/>
+            <FormInput
+              form={form}
+              key={field.teamAnswerId}
+              label={`Q ${index + 1}: ${field.question}`}
+              name={`answers.${index}.answer`}
+            />
           ))}
           <Button type="submit">Submit answers</Button>
         </form>

@@ -24,20 +24,20 @@ const QuizIdCreateTeamLazyImport = createFileRoute('/$quizId/create-team')()
 const AdminCreateIndexLazyImport = createFileRoute('/admin/create/')()
 const AdminQuizIdIndexLazyImport = createFileRoute('/admin/$quizId/')()
 const AdminQuizIdTeamsOverviewLazyImport = createFileRoute(
-  '/admin/$quizId/teams-overview',
+  '/admin/$quizId/teams-overview'
 )()
 const AdminQuizIdQuizControlLazyImport = createFileRoute(
-  '/admin/$quizId/quiz-control',
+  '/admin/$quizId/quiz-control'
 )()
 const AdminQuizIdGameOverviewLazyImport = createFileRoute(
-  '/admin/$quizId/game-overview',
+  '/admin/$quizId/game-overview'
 )()
 const QuizIdLayoutScoreViewingLazyImport = createFileRoute(
-  '/$quizId/_layout/score-viewing',
+  '/$quizId/_layout/score-viewing'
 )()
 const QuizIdLayoutPlayLazyImport = createFileRoute('/$quizId/_layout/play')()
 const QuizIdLayoutCheckAnswersLazyImport = createFileRoute(
-  '/$quizId/_layout/check-answers',
+  '/$quizId/_layout/check-answers'
 )()
 const QuizIdLayoutBreakLazyImport = createFileRoute('/$quizId/_layout/break')()
 
@@ -45,98 +45,98 @@ const QuizIdLayoutBreakLazyImport = createFileRoute('/$quizId/_layout/break')()
 
 const QuizIdRoute = QuizIdImport.update({
   path: '/$quizId',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRoute
 } as any)
 
 const IndexLazyRoute = IndexLazyImport.update({
   path: '/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRoute
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 
 const QuizIdCreateTeamLazyRoute = QuizIdCreateTeamLazyImport.update({
   path: '/create-team',
-  getParentRoute: () => QuizIdRoute,
+  getParentRoute: () => QuizIdRoute
 } as any).lazy(() =>
-  import('./routes/$quizId/create-team.lazy').then((d) => d.Route),
+  import('./routes/$quizId/create-team.lazy').then((d) => d.Route)
 )
 
 const QuizIdLayoutRoute = QuizIdLayoutImport.update({
   id: '/_layout',
-  getParentRoute: () => QuizIdRoute,
+  getParentRoute: () => QuizIdRoute
 } as any)
 
 const AdminCreateIndexLazyRoute = AdminCreateIndexLazyImport.update({
   path: '/admin/create/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRoute
 } as any).lazy(() =>
-  import('./routes/admin/create/index.lazy').then((d) => d.Route),
+  import('./routes/admin/create/index.lazy').then((d) => d.Route)
 )
 
 const AdminQuizIdIndexLazyRoute = AdminQuizIdIndexLazyImport.update({
   path: '/admin/$quizId/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRoute
 } as any).lazy(() =>
-  import('./routes/admin/$quizId/index.lazy').then((d) => d.Route),
+  import('./routes/admin/$quizId/index.lazy').then((d) => d.Route)
 )
 
 const AdminQuizIdTeamsOverviewLazyRoute =
   AdminQuizIdTeamsOverviewLazyImport.update({
     path: '/admin/$quizId/teams-overview',
-    getParentRoute: () => rootRoute,
+    getParentRoute: () => rootRoute
   } as any).lazy(() =>
-    import('./routes/admin/$quizId/teams-overview.lazy').then((d) => d.Route),
+    import('./routes/admin/$quizId/teams-overview.lazy').then((d) => d.Route)
   )
 
 const AdminQuizIdQuizControlLazyRoute = AdminQuizIdQuizControlLazyImport.update(
   {
     path: '/admin/$quizId/quiz-control',
-    getParentRoute: () => rootRoute,
-  } as any,
+    getParentRoute: () => rootRoute
+  } as any
 ).lazy(() =>
-  import('./routes/admin/$quizId/quiz-control.lazy').then((d) => d.Route),
+  import('./routes/admin/$quizId/quiz-control.lazy').then((d) => d.Route)
 )
 
 const AdminQuizIdGameOverviewLazyRoute =
   AdminQuizIdGameOverviewLazyImport.update({
     path: '/admin/$quizId/game-overview',
-    getParentRoute: () => rootRoute,
+    getParentRoute: () => rootRoute
   } as any).lazy(() =>
-    import('./routes/admin/$quizId/game-overview.lazy').then((d) => d.Route),
+    import('./routes/admin/$quizId/game-overview.lazy').then((d) => d.Route)
   )
 
 const QuizIdLayoutScoreViewingLazyRoute =
   QuizIdLayoutScoreViewingLazyImport.update({
     path: '/score-viewing',
-    getParentRoute: () => QuizIdLayoutRoute,
+    getParentRoute: () => QuizIdLayoutRoute
   } as any).lazy(() =>
-    import('./routes/$quizId/_layout/score-viewing.lazy').then((d) => d.Route),
+    import('./routes/$quizId/_layout/score-viewing.lazy').then((d) => d.Route)
   )
 
 const QuizIdLayoutPlayLazyRoute = QuizIdLayoutPlayLazyImport.update({
   path: '/play',
-  getParentRoute: () => QuizIdLayoutRoute,
+  getParentRoute: () => QuizIdLayoutRoute
 } as any).lazy(() =>
-  import('./routes/$quizId/_layout/play.lazy').then((d) => d.Route),
+  import('./routes/$quizId/_layout/play.lazy').then((d) => d.Route)
 )
 
 const QuizIdLayoutCheckAnswersLazyRoute =
   QuizIdLayoutCheckAnswersLazyImport.update({
     path: '/check-answers',
-    getParentRoute: () => QuizIdLayoutRoute,
+    getParentRoute: () => QuizIdLayoutRoute
   } as any).lazy(() =>
-    import('./routes/$quizId/_layout/check-answers.lazy').then((d) => d.Route),
+    import('./routes/$quizId/_layout/check-answers.lazy').then((d) => d.Route)
   )
 
 const QuizIdLayoutBreakLazyRoute = QuizIdLayoutBreakLazyImport.update({
   path: '/break',
-  getParentRoute: () => QuizIdLayoutRoute,
+  getParentRoute: () => QuizIdLayoutRoute
 } as any).lazy(() =>
-  import('./routes/$quizId/_layout/break.lazy').then((d) => d.Route),
+  import('./routes/$quizId/_layout/break.lazy').then((d) => d.Route)
 )
 
 const QuizIdLayoutWaitingRoute = QuizIdLayoutWaitingImport.update({
   path: '/waiting',
-  getParentRoute: () => QuizIdLayoutRoute,
+  getParentRoute: () => QuizIdLayoutRoute
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -259,11 +259,11 @@ const QuizIdLayoutRouteChildren: QuizIdLayoutRouteChildren = {
   QuizIdLayoutBreakLazyRoute: QuizIdLayoutBreakLazyRoute,
   QuizIdLayoutCheckAnswersLazyRoute: QuizIdLayoutCheckAnswersLazyRoute,
   QuizIdLayoutPlayLazyRoute: QuizIdLayoutPlayLazyRoute,
-  QuizIdLayoutScoreViewingLazyRoute: QuizIdLayoutScoreViewingLazyRoute,
+  QuizIdLayoutScoreViewingLazyRoute: QuizIdLayoutScoreViewingLazyRoute
 }
 
 const QuizIdLayoutRouteWithChildren = QuizIdLayoutRoute._addFileChildren(
-  QuizIdLayoutRouteChildren,
+  QuizIdLayoutRouteChildren
 )
 
 interface QuizIdRouteChildren {
@@ -273,7 +273,7 @@ interface QuizIdRouteChildren {
 
 const QuizIdRouteChildren: QuizIdRouteChildren = {
   QuizIdLayoutRoute: QuizIdLayoutRouteWithChildren,
-  QuizIdCreateTeamLazyRoute: QuizIdCreateTeamLazyRoute,
+  QuizIdCreateTeamLazyRoute: QuizIdCreateTeamLazyRoute
 }
 
 const QuizIdRouteWithChildren =
@@ -396,7 +396,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminQuizIdQuizControlLazyRoute: AdminQuizIdQuizControlLazyRoute,
   AdminQuizIdTeamsOverviewLazyRoute: AdminQuizIdTeamsOverviewLazyRoute,
   AdminQuizIdIndexLazyRoute: AdminQuizIdIndexLazyRoute,
-  AdminCreateIndexLazyRoute: AdminCreateIndexLazyRoute,
+  AdminCreateIndexLazyRoute: AdminCreateIndexLazyRoute
 }
 
 export const routeTree = rootRoute

@@ -11,11 +11,11 @@ import { Form } from '@/components/ui/form'
 import { createTeam } from '@/baas/team/create-team'
 
 export const Route = createLazyFileRoute('/$quizId/create-team')({
-  component: CreateTeam,
+  component: CreateTeam
 })
 
 const createTeamSchema = z.object({
-  teamName: z.string().min(1),
+  teamName: z.string().min(1)
 })
 
 type FormDataType = z.infer<typeof createTeamSchema>
@@ -26,14 +26,14 @@ function CreateTeam() {
 
   const { mutate: mutateCreateTeam } = useMutation({
     mutationFn: createTeam,
-    onSuccess: handleOnCreateTeamSuccess,
+    onSuccess: handleOnCreateTeamSuccess
   })
 
   const form = useForm<FormDataType>({
     resolver: zodResolver(createTeamSchema),
     defaultValues: {
-      teamName: '',
-    },
+      teamName: ''
+    }
   })
 
   const teamName = form.watch('teamName')
@@ -44,14 +44,14 @@ function CreateTeam() {
     localStorage.setItem('teamName', teamName)
 
     navigate({
-      to: `/${quizId}/waiting`,
+      to: `/${quizId}/waiting`
     })
   }
 
   function onFormSubmit({ teamName }: FormDataType) {
     mutateCreateTeam({
       teamName,
-      quizId,
+      quizId
     })
   }
 

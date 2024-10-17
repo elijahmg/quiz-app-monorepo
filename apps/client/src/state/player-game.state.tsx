@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { subscribeToQuizStatusUpdate } from '@/baas/quiz-status/subscribe-to-quiz-status-update';
-import type { QuizStatusStatusOptions } from '@/baas/pocketbase-types';
+import React, { useContext, useEffect, useRef, useState } from 'react'
+import { subscribeToQuizStatusUpdate } from '@/baas/quiz-status/subscribe-to-quiz-status-update'
+import type { QuizStatusStatusOptions } from '@/baas/pocketbase-types'
 
 interface IncomingUpdateArgs {
   question?: string
@@ -9,27 +9,34 @@ interface IncomingUpdateArgs {
   roundName?: string
 }
 
-const PlayerGameStateContext = React.createContext<IncomingUpdateArgs>({} as IncomingUpdateArgs)
+const PlayerGameStateContext = React.createContext<IncomingUpdateArgs>(
+  {} as IncomingUpdateArgs
+)
 
 interface Props {
   children: React.ReactNode
   quizId: string
 }
 
-
 export function PlayerGameStateProvider({ children, quizId }: Props) {
   const unsubscribe = useRef<{ unsubscribe: () => void } | null>(null)
 
-  const [currentQuizStatus, setCurrentQuizStatus] = useState<IncomingUpdateArgs>({} as IncomingUpdateArgs)
+  const [currentQuizStatus, setCurrentQuizStatus] =
+    useState<IncomingUpdateArgs>({} as IncomingUpdateArgs)
 
-  function handleIncomingUpdate({ question, questionId, status, roundName }: IncomingUpdateArgs) {
+  function handleIncomingUpdate({
+    question,
+    questionId,
+    status,
+    roundName
+  }: IncomingUpdateArgs) {
     setCurrentQuizStatus({ question, questionId, status, roundName })
   }
 
   async function subscribeToUpdate() {
     unsubscribe.current = await subscribeToQuizStatusUpdate(
       quizId,
-      handleIncomingUpdate,
+      handleIncomingUpdate
     )
   }
 

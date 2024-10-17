@@ -247,5 +247,5 @@ export function PeopleParty() {
         </clipPath>
       </defs>
     </svg>
-  );
+  )
 }

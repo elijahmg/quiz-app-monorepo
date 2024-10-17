@@ -1,9 +1,9 @@
 import React from 'react'
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
-import { MainInfo } from '@/components/modules/create-quiz-modules/main-info';
+import { MainInfo } from '@/components/modules/create-quiz-modules/main-info'
 
 export const Route = createLazyFileRoute('/admin/create/')({
-  component: AdminIndex,
+  component: AdminIndex
 })
 
 function AdminIndex(): React.ReactNode {
@@ -14,10 +14,10 @@ function AdminIndex(): React.ReactNode {
       to: `/admin/${quizId}`
     })
   }
-  
+
   return (
     <div className="flex justify-center items-center h-[100vh]">
-      <MainInfo onSuccess={onSuccessQuizCreate}/>
+      <MainInfo onSuccess={onSuccessQuizCreate} />
     </div>
   )
 }

@@ -1,11 +1,17 @@
-import React from 'react';
-import type { FieldValues, Path, UseFormReturn } from 'react-hook-form';
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import React from 'react'
+import type { FieldValues, Path, UseFormReturn } from 'react-hook-form'
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage
+} from '@/components/ui/form'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 
-export interface RadioButtonOption{
-  value: string;
-  label: string;
+export interface RadioButtonOption {
+  value: string
+  label: string
 }
 
 interface FormRadioButtonProps<T extends FieldValues> {
@@ -16,7 +22,13 @@ interface FormRadioButtonProps<T extends FieldValues> {
   options: RadioButtonOption[]
 }
 
-export function FormRadioButtons<T extends FieldValues>({ name, label, form, options, vertical }: FormRadioButtonProps<T>) {
+export function FormRadioButtons<T extends FieldValues>({
+  name,
+  label,
+  form,
+  options,
+  vertical
+}: FormRadioButtonProps<T>) {
   return (
     <FormField
       control={form.control}
@@ -31,18 +43,19 @@ export function FormRadioButtons<T extends FieldValues>({ name, label, form, opt
               onValueChange={field.onChange}
             >
               {options.map(({ value, label }) => (
-                <FormItem className="flex items-center space-x-3 space-y-0" key={label}>
+                <FormItem
+                  className="flex items-center space-x-3 space-y-0"
+                  key={label}
+                >
                   <FormControl>
-                    <RadioGroupItem value={value}/>
+                    <RadioGroupItem value={value} />
                   </FormControl>
-                  <FormLabel className="font-normal">
-                    {label}
-                  </FormLabel>
+                  <FormLabel className="font-normal">{label}</FormLabel>
                 </FormItem>
               ))}
             </RadioGroup>
           </FormControl>
-          <FormMessage/>
+          <FormMessage />
         </FormItem>
       )}
     />

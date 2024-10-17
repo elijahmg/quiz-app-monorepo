@@ -139,5 +139,5 @@ export function AlienTaken() {
         </clipPath>
       </defs>
     </svg>
-  );
+  )
 }

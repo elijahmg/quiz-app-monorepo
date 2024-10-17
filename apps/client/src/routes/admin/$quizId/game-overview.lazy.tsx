@@ -1,17 +1,20 @@
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
-import React from 'react';
-import { useQuery, useMutation } from '@tanstack/react-query';
-import { CenterWrapper } from '@/components/wrappers/center-wrapper';
-import { AdminInGameHeader } from '@/components/modules/admin-in-game-header';
-import type { TeamScores } from '@/components/modules/teams-table';
-import { TeamsTable } from '@/components/modules/teams-table';
-import { Button } from '@/components/ui/button';
+import React from 'react'
+import { useQuery, useMutation } from '@tanstack/react-query'
+import { CenterWrapper } from '@/components/wrappers/center-wrapper'
+import { AdminInGameHeader } from '@/components/modules/admin-in-game-header'
+import type { TeamScores } from '@/components/modules/teams-table'
+import { TeamsTable } from '@/components/modules/teams-table'
+import { Button } from '@/components/ui/button'
 import {
   GET_ADMIN_TOTAL_TEAMS_RESULTS_API_KEY,
   getAdminTotalTeamsResults
-} from '@/baas/team-answers/get-admin-total-teams-results';
-import { GET_NEXT_QUESTION_ID_API_KEY, getNextQuestionId } from '@/baas/quiz-status/get-next-question-id';
-import { startAnotherRound } from '@/baas/quiz-status/start-another-round';
+} from '@/baas/team-answers/get-admin-total-teams-results'
+import {
+  GET_NEXT_QUESTION_ID_API_KEY,
+  getNextQuestionId
+} from '@/baas/quiz-status/get-next-question-id'
+import { startAnotherRound } from '@/baas/quiz-status/start-another-round'
 
 export const Route = createLazyFileRoute('/admin/$quizId/game-overview')({
   component: GameOverview
@@ -33,9 +36,9 @@ function GameOverview() {
     queryFn: () => getNextQuestionId(quizId)
   })
 
-  const {mutate: mutateStartAnotherRound} = useMutation({
+  const { mutate: mutateStartAnotherRound } = useMutation({
     mutationFn: startAnotherRound,
-    onSuccess: () => navigate({to: `/admin/${quizId}/quiz-control`})
+    onSuccess: () => navigate({ to: `/admin/${quizId}/quiz-control` })
   })
 
   function handleStartAnotherRound() {
@@ -49,8 +52,10 @@ function GameOverview() {
 
   return (
     <CenterWrapper>
-      <AdminInGameHeader hideRoundInfo quizId={quizId}/>
-      {Boolean(teamsScores) && <TeamsTable teamsScoresData={teamsScores as TeamScores}/>}
+      <AdminInGameHeader hideRoundInfo quizId={quizId} />
+      {Boolean(teamsScores) && (
+        <TeamsTable teamsScoresData={teamsScores as TeamScores} />
+      )}
       <Button onClick={handleStartAnotherRound}>Start another round</Button>
     </CenterWrapper>
   )

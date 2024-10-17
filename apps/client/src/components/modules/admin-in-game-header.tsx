@@ -1,10 +1,13 @@
-import React from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { Badge } from '@/components/ui/badge';
-import { GET_ADMIN_HEADER_DATA_API_KEY, getAdminHeaderData } from '@/baas/quiz/get-admin-header-data';
+import React from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { Badge } from '@/components/ui/badge'
+import {
+  GET_ADMIN_HEADER_DATA_API_KEY,
+  getAdminHeaderData
+} from '@/baas/quiz/get-admin-header-data'
 
 interface Props {
-  hideRoundInfo?: boolean;
+  hideRoundInfo?: boolean
   quizId: string
 }
 
@@ -23,11 +26,11 @@ export function AdminInGameHeader({ hideRoundInfo, quizId }: Props) {
         </div>
         <Badge className="self-baseline">Teams online: 7</Badge>
       </div>
-      {!hideRoundInfo &&
-          <p className="bg-gray-100 px-4 py-3 w-full rounded-md font-semibold">
-              Round: {data?.currentRoundName}
-          </p>
-      }
+      {!hideRoundInfo && (
+        <p className="bg-gray-100 px-4 py-3 w-full rounded-md font-semibold">
+          Round: {data?.currentRoundName}
+        </p>
+      )}
     </>
   )
 }
