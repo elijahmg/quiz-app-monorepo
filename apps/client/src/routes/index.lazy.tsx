@@ -15,6 +15,9 @@ import {
   isQuizExistByPin
 } from '@/baas/quiz/is-quiz-exist-by-pin'
 import { useToast } from '@/hooks/use-toast'
+import { getQuizByPassword } from '@/baas/quiz/get-quiz-by-password.ts'
+import type { QuizStatusStatusOptions } from '@/baas/pocketbase-types.ts'
+import { STATUS_TO_ROUTES } from '@/util/status-to-router-map.ts'
 
 export const Route = createLazyFileRoute('/')({
   component: App
@@ -40,6 +43,30 @@ function App(): JSX.Element {
       }
     }
   })
+
+  const { mutate: mutateGetQuizByPassword } = useMutation({
+    mutationFn: getQuizByPassword,
+    onSuccess: handleNavigateToGameState
+  })
+
+  function handleNavigateToGameState({
+    quizId,
+    status
+  }: {
+    quizId: string | null
+    status?: QuizStatusStatusOptions
+  }) {
+    if (quizId && status) {
+      navigate({
+        to: `/admin/${quizId}${STATUS_TO_ROUTES[status]}`
+      })
+    } else {
+      toast({
+        variant: 'destructive',
+        description: 'Hmm... Something went wrong'
+      })
+    }
+  }
 
   function handleOnSuccessPin(data: SuccessResponse): void {
     navigate({
@@ -83,7 +110,9 @@ function App(): JSX.Element {
           }}
           placeholder="Password..."
         />
-        <Button>Manage the game!</Button>
+        <Button onClick={() => mutateGetQuizByPassword(adminPassword)}>
+          Manage the game!
+        </Button>
         <h2 className="text-xl font-bold">OR</h2>
         <Link
           className={buttonVariants({ variant: 'outline' })}

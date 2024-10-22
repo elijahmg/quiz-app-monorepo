@@ -10,7 +10,7 @@ export function CenterWrapper({ children, className }: Props) {
   return (
     <div
       className={cn(
-        'max-w-screen-lg mx-6 lg:mx-auto mt-14 space-y-4 max-h-screen',
+        'max-w-screen-lg px-6 lg:mx-auto p-14 space-y-4 max-h-screen',
         className
       )}
     >

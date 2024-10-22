@@ -24,20 +24,23 @@ const QuizIdCreateTeamLazyImport = createFileRoute('/$quizId/create-team')()
 const AdminCreateIndexLazyImport = createFileRoute('/admin/create/')()
 const AdminQuizIdIndexLazyImport = createFileRoute('/admin/$quizId/')()
 const AdminQuizIdTeamsOverviewLazyImport = createFileRoute(
-  '/admin/$quizId/teams-overview'
+  '/admin/$quizId/teams-overview',
 )()
 const AdminQuizIdQuizControlLazyImport = createFileRoute(
-  '/admin/$quizId/quiz-control'
+  '/admin/$quizId/quiz-control',
 )()
 const AdminQuizIdGameOverviewLazyImport = createFileRoute(
-  '/admin/$quizId/game-overview'
+  '/admin/$quizId/game-overview',
 )()
 const QuizIdLayoutScoreViewingLazyImport = createFileRoute(
-  '/$quizId/_layout/score-viewing'
+  '/$quizId/_layout/score-viewing',
 )()
 const QuizIdLayoutPlayLazyImport = createFileRoute('/$quizId/_layout/play')()
+const QuizIdLayoutEndGameLazyImport = createFileRoute(
+  '/$quizId/_layout/end-game',
+)()
 const QuizIdLayoutCheckAnswersLazyImport = createFileRoute(
-  '/$quizId/_layout/check-answers'
+  '/$quizId/_layout/check-answers',
 )()
 const QuizIdLayoutBreakLazyImport = createFileRoute('/$quizId/_layout/break')()
 
@@ -45,98 +48,105 @@ const QuizIdLayoutBreakLazyImport = createFileRoute('/$quizId/_layout/break')()
 
 const QuizIdRoute = QuizIdImport.update({
   path: '/$quizId',
-  getParentRoute: () => rootRoute
+  getParentRoute: () => rootRoute,
 } as any)
 
 const IndexLazyRoute = IndexLazyImport.update({
   path: '/',
-  getParentRoute: () => rootRoute
+  getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 
 const QuizIdCreateTeamLazyRoute = QuizIdCreateTeamLazyImport.update({
   path: '/create-team',
-  getParentRoute: () => QuizIdRoute
+  getParentRoute: () => QuizIdRoute,
 } as any).lazy(() =>
-  import('./routes/$quizId/create-team.lazy').then((d) => d.Route)
+  import('./routes/$quizId/create-team.lazy').then((d) => d.Route),
 )
 
 const QuizIdLayoutRoute = QuizIdLayoutImport.update({
   id: '/_layout',
-  getParentRoute: () => QuizIdRoute
+  getParentRoute: () => QuizIdRoute,
 } as any)
 
 const AdminCreateIndexLazyRoute = AdminCreateIndexLazyImport.update({
   path: '/admin/create/',
-  getParentRoute: () => rootRoute
+  getParentRoute: () => rootRoute,
 } as any).lazy(() =>
-  import('./routes/admin/create/index.lazy').then((d) => d.Route)
+  import('./routes/admin/create/index.lazy').then((d) => d.Route),
 )
 
 const AdminQuizIdIndexLazyRoute = AdminQuizIdIndexLazyImport.update({
   path: '/admin/$quizId/',
-  getParentRoute: () => rootRoute
+  getParentRoute: () => rootRoute,
 } as any).lazy(() =>
-  import('./routes/admin/$quizId/index.lazy').then((d) => d.Route)
+  import('./routes/admin/$quizId/index.lazy').then((d) => d.Route),
 )
 
 const AdminQuizIdTeamsOverviewLazyRoute =
   AdminQuizIdTeamsOverviewLazyImport.update({
     path: '/admin/$quizId/teams-overview',
-    getParentRoute: () => rootRoute
+    getParentRoute: () => rootRoute,
   } as any).lazy(() =>
-    import('./routes/admin/$quizId/teams-overview.lazy').then((d) => d.Route)
+    import('./routes/admin/$quizId/teams-overview.lazy').then((d) => d.Route),
   )
 
 const AdminQuizIdQuizControlLazyRoute = AdminQuizIdQuizControlLazyImport.update(
   {
     path: '/admin/$quizId/quiz-control',
-    getParentRoute: () => rootRoute
-  } as any
+    getParentRoute: () => rootRoute,
+  } as any,
 ).lazy(() =>
-  import('./routes/admin/$quizId/quiz-control.lazy').then((d) => d.Route)
+  import('./routes/admin/$quizId/quiz-control.lazy').then((d) => d.Route),
 )
 
 const AdminQuizIdGameOverviewLazyRoute =
   AdminQuizIdGameOverviewLazyImport.update({
     path: '/admin/$quizId/game-overview',
-    getParentRoute: () => rootRoute
+    getParentRoute: () => rootRoute,
   } as any).lazy(() =>
-    import('./routes/admin/$quizId/game-overview.lazy').then((d) => d.Route)
+    import('./routes/admin/$quizId/game-overview.lazy').then((d) => d.Route),
   )
 
 const QuizIdLayoutScoreViewingLazyRoute =
   QuizIdLayoutScoreViewingLazyImport.update({
     path: '/score-viewing',
-    getParentRoute: () => QuizIdLayoutRoute
+    getParentRoute: () => QuizIdLayoutRoute,
   } as any).lazy(() =>
-    import('./routes/$quizId/_layout/score-viewing.lazy').then((d) => d.Route)
+    import('./routes/$quizId/_layout/score-viewing.lazy').then((d) => d.Route),
   )
 
 const QuizIdLayoutPlayLazyRoute = QuizIdLayoutPlayLazyImport.update({
   path: '/play',
-  getParentRoute: () => QuizIdLayoutRoute
+  getParentRoute: () => QuizIdLayoutRoute,
 } as any).lazy(() =>
-  import('./routes/$quizId/_layout/play.lazy').then((d) => d.Route)
+  import('./routes/$quizId/_layout/play.lazy').then((d) => d.Route),
+)
+
+const QuizIdLayoutEndGameLazyRoute = QuizIdLayoutEndGameLazyImport.update({
+  path: '/end-game',
+  getParentRoute: () => QuizIdLayoutRoute,
+} as any).lazy(() =>
+  import('./routes/$quizId/_layout/end-game.lazy').then((d) => d.Route),
 )
 
 const QuizIdLayoutCheckAnswersLazyRoute =
   QuizIdLayoutCheckAnswersLazyImport.update({
     path: '/check-answers',
-    getParentRoute: () => QuizIdLayoutRoute
+    getParentRoute: () => QuizIdLayoutRoute,
   } as any).lazy(() =>
-    import('./routes/$quizId/_layout/check-answers.lazy').then((d) => d.Route)
+    import('./routes/$quizId/_layout/check-answers.lazy').then((d) => d.Route),
   )
 
 const QuizIdLayoutBreakLazyRoute = QuizIdLayoutBreakLazyImport.update({
   path: '/break',
-  getParentRoute: () => QuizIdLayoutRoute
+  getParentRoute: () => QuizIdLayoutRoute,
 } as any).lazy(() =>
-  import('./routes/$quizId/_layout/break.lazy').then((d) => d.Route)
+  import('./routes/$quizId/_layout/break.lazy').then((d) => d.Route),
 )
 
 const QuizIdLayoutWaitingRoute = QuizIdLayoutWaitingImport.update({
   path: '/waiting',
-  getParentRoute: () => QuizIdLayoutRoute
+  getParentRoute: () => QuizIdLayoutRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -190,6 +200,13 @@ declare module '@tanstack/react-router' {
       path: '/check-answers'
       fullPath: '/$quizId/check-answers'
       preLoaderRoute: typeof QuizIdLayoutCheckAnswersLazyImport
+      parentRoute: typeof QuizIdLayoutImport
+    }
+    '/$quizId/_layout/end-game': {
+      id: '/$quizId/_layout/end-game'
+      path: '/end-game'
+      fullPath: '/$quizId/end-game'
+      preLoaderRoute: typeof QuizIdLayoutEndGameLazyImport
       parentRoute: typeof QuizIdLayoutImport
     }
     '/$quizId/_layout/play': {
@@ -250,6 +267,7 @@ interface QuizIdLayoutRouteChildren {
   QuizIdLayoutWaitingRoute: typeof QuizIdLayoutWaitingRoute
   QuizIdLayoutBreakLazyRoute: typeof QuizIdLayoutBreakLazyRoute
   QuizIdLayoutCheckAnswersLazyRoute: typeof QuizIdLayoutCheckAnswersLazyRoute
+  QuizIdLayoutEndGameLazyRoute: typeof QuizIdLayoutEndGameLazyRoute
   QuizIdLayoutPlayLazyRoute: typeof QuizIdLayoutPlayLazyRoute
   QuizIdLayoutScoreViewingLazyRoute: typeof QuizIdLayoutScoreViewingLazyRoute
 }
@@ -258,12 +276,13 @@ const QuizIdLayoutRouteChildren: QuizIdLayoutRouteChildren = {
   QuizIdLayoutWaitingRoute: QuizIdLayoutWaitingRoute,
   QuizIdLayoutBreakLazyRoute: QuizIdLayoutBreakLazyRoute,
   QuizIdLayoutCheckAnswersLazyRoute: QuizIdLayoutCheckAnswersLazyRoute,
+  QuizIdLayoutEndGameLazyRoute: QuizIdLayoutEndGameLazyRoute,
   QuizIdLayoutPlayLazyRoute: QuizIdLayoutPlayLazyRoute,
-  QuizIdLayoutScoreViewingLazyRoute: QuizIdLayoutScoreViewingLazyRoute
+  QuizIdLayoutScoreViewingLazyRoute: QuizIdLayoutScoreViewingLazyRoute,
 }
 
 const QuizIdLayoutRouteWithChildren = QuizIdLayoutRoute._addFileChildren(
-  QuizIdLayoutRouteChildren
+  QuizIdLayoutRouteChildren,
 )
 
 interface QuizIdRouteChildren {
@@ -273,7 +292,7 @@ interface QuizIdRouteChildren {
 
 const QuizIdRouteChildren: QuizIdRouteChildren = {
   QuizIdLayoutRoute: QuizIdLayoutRouteWithChildren,
-  QuizIdCreateTeamLazyRoute: QuizIdCreateTeamLazyRoute
+  QuizIdCreateTeamLazyRoute: QuizIdCreateTeamLazyRoute,
 }
 
 const QuizIdRouteWithChildren =
@@ -286,6 +305,7 @@ export interface FileRoutesByFullPath {
   '/$quizId/waiting': typeof QuizIdLayoutWaitingRoute
   '/$quizId/break': typeof QuizIdLayoutBreakLazyRoute
   '/$quizId/check-answers': typeof QuizIdLayoutCheckAnswersLazyRoute
+  '/$quizId/end-game': typeof QuizIdLayoutEndGameLazyRoute
   '/$quizId/play': typeof QuizIdLayoutPlayLazyRoute
   '/$quizId/score-viewing': typeof QuizIdLayoutScoreViewingLazyRoute
   '/admin/$quizId/game-overview': typeof AdminQuizIdGameOverviewLazyRoute
@@ -302,6 +322,7 @@ export interface FileRoutesByTo {
   '/$quizId/waiting': typeof QuizIdLayoutWaitingRoute
   '/$quizId/break': typeof QuizIdLayoutBreakLazyRoute
   '/$quizId/check-answers': typeof QuizIdLayoutCheckAnswersLazyRoute
+  '/$quizId/end-game': typeof QuizIdLayoutEndGameLazyRoute
   '/$quizId/play': typeof QuizIdLayoutPlayLazyRoute
   '/$quizId/score-viewing': typeof QuizIdLayoutScoreViewingLazyRoute
   '/admin/$quizId/game-overview': typeof AdminQuizIdGameOverviewLazyRoute
@@ -320,6 +341,7 @@ export interface FileRoutesById {
   '/$quizId/_layout/waiting': typeof QuizIdLayoutWaitingRoute
   '/$quizId/_layout/break': typeof QuizIdLayoutBreakLazyRoute
   '/$quizId/_layout/check-answers': typeof QuizIdLayoutCheckAnswersLazyRoute
+  '/$quizId/_layout/end-game': typeof QuizIdLayoutEndGameLazyRoute
   '/$quizId/_layout/play': typeof QuizIdLayoutPlayLazyRoute
   '/$quizId/_layout/score-viewing': typeof QuizIdLayoutScoreViewingLazyRoute
   '/admin/$quizId/game-overview': typeof AdminQuizIdGameOverviewLazyRoute
@@ -338,6 +360,7 @@ export interface FileRouteTypes {
     | '/$quizId/waiting'
     | '/$quizId/break'
     | '/$quizId/check-answers'
+    | '/$quizId/end-game'
     | '/$quizId/play'
     | '/$quizId/score-viewing'
     | '/admin/$quizId/game-overview'
@@ -353,6 +376,7 @@ export interface FileRouteTypes {
     | '/$quizId/waiting'
     | '/$quizId/break'
     | '/$quizId/check-answers'
+    | '/$quizId/end-game'
     | '/$quizId/play'
     | '/$quizId/score-viewing'
     | '/admin/$quizId/game-overview'
@@ -369,6 +393,7 @@ export interface FileRouteTypes {
     | '/$quizId/_layout/waiting'
     | '/$quizId/_layout/break'
     | '/$quizId/_layout/check-answers'
+    | '/$quizId/_layout/end-game'
     | '/$quizId/_layout/play'
     | '/$quizId/_layout/score-viewing'
     | '/admin/$quizId/game-overview'
@@ -396,7 +421,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminQuizIdQuizControlLazyRoute: AdminQuizIdQuizControlLazyRoute,
   AdminQuizIdTeamsOverviewLazyRoute: AdminQuizIdTeamsOverviewLazyRoute,
   AdminQuizIdIndexLazyRoute: AdminQuizIdIndexLazyRoute,
-  AdminCreateIndexLazyRoute: AdminCreateIndexLazyRoute
+  AdminCreateIndexLazyRoute: AdminCreateIndexLazyRoute,
 }
 
 export const routeTree = rootRoute
@@ -437,6 +462,7 @@ export const routeTree = rootRoute
         "/$quizId/_layout/waiting",
         "/$quizId/_layout/break",
         "/$quizId/_layout/check-answers",
+        "/$quizId/_layout/end-game",
         "/$quizId/_layout/play",
         "/$quizId/_layout/score-viewing"
       ]
@@ -455,6 +481,10 @@ export const routeTree = rootRoute
     },
     "/$quizId/_layout/check-answers": {
       "filePath": "$quizId/_layout/check-answers.lazy.tsx",
+      "parent": "/$quizId/_layout"
+    },
+    "/$quizId/_layout/end-game": {
+      "filePath": "$quizId/_layout/end-game.lazy.tsx",
       "parent": "/$quizId/_layout"
     },
     "/$quizId/_layout/play": {

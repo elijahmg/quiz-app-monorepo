@@ -38,6 +38,12 @@ function ScoreView() {
         to: `/${quizId}/play`
       })
     }
+
+    if (status === QuizStatusStatusOptions.END_QUIZ) {
+      navigate({
+        to: `/${quizId}/end-game`
+      })
+    }
   }, [status])
 
   return (
